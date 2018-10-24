@@ -114,7 +114,15 @@ data class Args(
                 description = "Either `true` or `false` to enable/disable running tests via Android Test Orchestrator. False by default.",
                 order = 12
         )
-        var runWithOrchestrator: Boolean = false
+        var runWithOrchestrator: Boolean = false,
+
+        @Parameter(
+                names = arrayOf("--device-screenshot-directory"),
+                required = false,
+                description = "Directory where screenshots will be pulled from on device. `/storage/emulated/0/app_spoon-screenshots/` by default.",
+                order = 13
+        )
+        var deviceScreenshotDirectory: String = "/storage/emulated/0/app_spoon-screenshots/"
 )
 
 // No way to share array both for runtime and annotation without reflection.

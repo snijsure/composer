@@ -45,7 +45,8 @@ fun AdbDevice.runTests(
         outputDir: File,
         verboseOutput: Boolean,
         keepOutput: Boolean,
-        useTestServices: Boolean
+        useTestServices: Boolean,
+        deviceScreenshotDirectory: String
 ): Single<AdbDeviceTestRun> {
 
     val adbDevice = this
@@ -85,7 +86,7 @@ fun AdbDevice.runTests(
                 )
             }
             .flatMap { test ->
-                pullTestFiles(adbDevice, test, outputDir, verboseOutput)
+                pullTestFiles(adbDevice, test, outputDir, verboseOutput, deviceScreenshotDirectory)
                         .toObservable()
                         .subscribeOn(Schedulers.io())
                         .map { pulledFiles -> test to pulledFiles }
@@ -158,7 +159,11 @@ data class PulledFiles(
         val screenshots: List<File>
 )
 
-private fun pullTestFiles(adbDevice: AdbDevice, test: InstrumentationTest, outputDir: File, verboseOutput: Boolean): Single<PulledFiles> = Single
+private fun pullTestFiles(adbDevice: AdbDevice,
+                          test: InstrumentationTest,
+                          outputDir: File,
+                          verboseOutput: Boolean,
+                          deviceScreenshotDirectory: String): Single<PulledFiles> = Single
         // TODO: Add support for spoon files dir.
         .fromCallable {
             File(File(File(outputDir, "screenshots"), adbDevice.id), test.className).apply { mkdirs() }
@@ -167,7 +172,7 @@ private fun pullTestFiles(adbDevice: AdbDevice, test: InstrumentationTest, outpu
             adbDevice
                     .pullFolder(
                             // TODO: Add support for internal storage and external storage strategies.
-                            folderOnDevice = "/storage/emulated/0/app_spoon-screenshots/${test.className}/${test.testName}",
+                            folderOnDevice = "$deviceScreenshotDirectory/${test.className}/${test.testName}",
                             folderOnHostMachine = screenshotsFolderOnHostMachine,
                             logErrors = verboseOutput
                     )

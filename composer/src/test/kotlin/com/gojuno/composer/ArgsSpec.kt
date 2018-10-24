@@ -31,7 +31,8 @@ class ArgsSpec : Spek({
                     devicePattern = "",
                     installTimeoutSeconds = 120,
                     failIfNoTests = true,
-                    runWithOrchestrator = false
+                    runWithOrchestrator = false,
+                    deviceScreenshotDirectory = "/storage/emulated/0/app_spoon-screenshots/"
             ))
         }
     }

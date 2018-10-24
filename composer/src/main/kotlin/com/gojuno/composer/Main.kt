@@ -147,7 +147,8 @@ private fun runAllTests(args: Args, testPackage: TestPackage.Valid, testRunner: 
                                                 outputDir = File(args.outputDirectory),
                                                 verboseOutput = args.verboseOutput,
                                                 keepOutput = args.keepOutputOnExit,
-                                                useTestServices = args.runWithOrchestrator
+                                                useTestServices = args.runWithOrchestrator,
+                                                deviceScreenshotDirectory = args.deviceScreenshotDirectory
                                         )
                                         .flatMap { adbDeviceTestRun ->
                                             writeJunit4Report(
